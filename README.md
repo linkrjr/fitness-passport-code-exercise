@@ -3,7 +3,6 @@
 ## Overview
 
 This project implements a mobile application that displays gym locations on a map.
-Users can view markers, zoom into the map, and center the map on their current location.
 
 The project was built using React Native and TypeScript and focuses on clean architecture,
 separation of concerns, and scalability.
@@ -19,7 +18,9 @@ Each feature contains its screens, components, hooks, and services, allowing fea
 - React Native
 - TypeScript
 - React Navigation
+- bottom-tabs
 - Expo
+- vector-icons
 
 ## Running the Project
 
@@ -46,14 +47,12 @@ src/
   components/     Shared UI components
   services/       API and external services
   screens/        UI Screens         
-  hooks/          Reusable hooks
   styles/         Reusable UI Elements 
   utils/          Utility functions
 
 ## Architecture Decisions
 
 - Feature-based folder structure to improve scalability
-- ?????Hooks used to isolate business logic from UI components?????
 - Services layer used for API communication
 
 ## Assumptions
@@ -64,5 +63,6 @@ src/
 ## Trade-offs and Possible Improvements
 
 - The client API is only reading from a local JSON file, could easily be extended to invoke a REST API;
-- Map markers could be clustered for better performance???
-- Additional unit tests could be added for service layers
+- Map markers could be clustered for better performance;
+- Infinite scrolling and pull to refresh can be used on the locations list to improve performance;
+- Unit tests could be added for service layers and UI;

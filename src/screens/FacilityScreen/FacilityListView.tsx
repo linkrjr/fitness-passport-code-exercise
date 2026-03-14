@@ -1,6 +1,5 @@
 import { SPACING } from '@styles/theme';
 import { StyleSheet, Text, View } from 'react-native';
-import Unorderedlist from 'react-native-unordered-list';
 
 const styles = StyleSheet.create({
   container: {
@@ -17,7 +16,7 @@ const FacilityListView = ({ facilities }: FacilityListViewProps) => {
     <View style={styles.container}>
       <Text>Facilities:</Text>
       {facilities.map((facility) => (
-        <Unorderedlist key={facility}><Text key={facility}>{facility}</Text></Unorderedlist>
+        <Text key={facility}>- {facility}</Text>
       ))}            
     </View>          
   );
