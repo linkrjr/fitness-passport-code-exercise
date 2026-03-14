@@ -21,6 +21,7 @@ Each feature contains its screens, components, hooks, and services, allowing fea
 - bottom-tabs
 - Expo
 - vector-icons
+- Shopify FlashList
 
 ## Running the Project
 
@@ -55,6 +56,7 @@ src/
 - Feature-based folder structure to improve scalability
 - Services layer used for API communication
 - It uses `useState` as its state management solution
+- Uses Shopify FlashList for better performance
 
 ## Assumptions
 

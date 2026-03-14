@@ -86,8 +86,8 @@ const HomeView = () => {
   if (!!hasError) return (<EmptyView text='Fail to load locations.' />);
 
   return (
-    <View>
-      <FlatList 
+    <View style={{ flex: 1 }}>
+      <FlashList 
         ListHeaderComponent={<SearchBarView value={searchText} onChangeText={setSearchText} />}
         data={facilities}
         renderItem={renderItem}
