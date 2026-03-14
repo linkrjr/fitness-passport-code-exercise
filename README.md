@@ -54,6 +54,7 @@ src/
 
 - Feature-based folder structure to improve scalability
 - Services layer used for API communication
+- It uses `useState` as its state management solution
 
 ## Assumptions
 
