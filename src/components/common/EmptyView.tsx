@@ -1,7 +1,7 @@
 import { Text, View, StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  emptyList: {
+  container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',    
@@ -12,12 +12,12 @@ export type EmptyProps = {
   text: string,
 }
 
-const EmptyList = ({ text }: EmptyProps) => {
+const EmptyView = ({ text }: EmptyProps) => {
   return (
-    <View style={styles.emptyList}>
+    <View style={styles.container}>
       <Text>{text}</Text>
     </View>
   );
 }
 
-export default EmptyList;
+export default EmptyView;

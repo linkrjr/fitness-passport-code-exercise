@@ -14,7 +14,6 @@ const RootStackScreen = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Locations" component={HomeView}/>
-
       <Stack.Screen name="Facility" component={FacilityView} options={{ headerBackButtonDisplayMode: 'minimal' }}   />
     </Stack.Navigator>
   )
@@ -30,7 +29,7 @@ const AppNavigation = () => {
   return (
     <NavigationContainer>
       <Tabs.Navigator screenOptions={({ route }: RouteProps) => ({ tabBarIcon: tabBarIcon(route) }) }>
-        <Tabs.Screen name='Locations' component={RootStackScreen} options={{ headerShown: false }} />
+        <Tabs.Screen name='FacilitiesList' component={RootStackScreen} options={{ headerShown: false }} />
         <Tabs.Screen name='About' component={AboutView} />
       </Tabs.Navigator>
     </NavigationContainer>

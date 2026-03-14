@@ -1,11 +1,7 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { StyleSheet, Text, View, Alert, Linking } from 'react-native';
-import * as Location from 'expo-location';
-import { LocationObjectCoords } from 'expo-location';
-import { COLORS, SPACING } from '@styles/theme';
-import { createShadow } from '@utils/shadow';
+import React, { useEffect, useRef } from 'react';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { COLORS, SPACING, TYPOGRAPHY } from '@styles/theme';
 import MapView, { Marker } from 'react-native-maps';
-
 import FacilityListView from './FacilityListView';
 import { Facility } from '@models/Facility';
 import { RootStackParamList } from '@navigation/types';
@@ -14,8 +10,6 @@ import { RouteProp } from '@react-navigation/native';
 const styles = StyleSheet.create({
   card: {
     backgroundColor: COLORS.surface,
-    padding: SPACING.md,
-    ...createShadow(4),
   },
 
   map: {
@@ -24,18 +18,19 @@ const styles = StyleSheet.create({
   },
 
   content: {
-    padding: SPACING.md,
+    borderColor: 'block',
+    padding: SPACING.xl,
   },
 
   name: {
-    fontSize: 20,
-    color: "#000000",
+    fontSize: TYPOGRAPHY.sizes.heading,
+    color: COLORS.text,
   },
+
   address: {
-    fontSize: 14,
-    color: "#3c3c3c",
+    fontSize: TYPOGRAPHY.sizes.body,
+    color: COLORS.textSecondary,
   },
-  facilities: {},
 });
 
 type FacilityListViewProps = {
@@ -55,32 +50,34 @@ const FacilityView: React.FC<FacilityListViewProps> = ({ route }) => {
   }, []);
 
   return (
-    <View style={styles.card}>
-      <MapView 
-        initialRegion={
-          {
-            latitudeDelta: 0.01, 
-            longitudeDelta: 0.01, 
-            ...selectedFacility.location
-          }
-        } 
-        ref={mapRef} 
-        style={styles.map} 
-        rotateEnabled={false}
-      >
-        <Marker coordinate={selectedFacility.location} />
-      </MapView>
-      <View style={styles.content}>
-        <View>
-          <Text style={styles.name}>{selectedFacility.name}</Text>
+    <ScrollView style={styles.card}>
+      <View>
+        <MapView 
+          initialRegion={
+            {
+              latitudeDelta: 0.01, 
+              longitudeDelta: 0.01, 
+              ...selectedFacility.location
+            }
+          } 
+          ref={mapRef} 
+          style={styles.map} 
+          rotateEnabled={false}
+        >
+          <Marker coordinate={selectedFacility.location} />
+        </MapView>
+        <View style={styles.content}>
+          <View>
+            <Text style={styles.name}>{selectedFacility.name}</Text>
+          </View>
+          <View>
+            <Text>{selectedFacility.address}</Text>
+          </View>
+          <FacilityListView facilities={selectedFacility.facilities} />
         </View>
-        <View>
-          <Text>{selectedFacility.address}</Text>
-        </View>
-        <FacilityListView facilities={selectedFacility.facilities} />
-      </View>
-
-    </View>       
+      </View> 
+    </ScrollView>
+      
   )
 }
 

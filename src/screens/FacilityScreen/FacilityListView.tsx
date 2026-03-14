@@ -1,9 +1,10 @@
+import { SPACING } from '@styles/theme';
 import { StyleSheet, Text, View } from 'react-native';
 import Unorderedlist from 'react-native-unordered-list';
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 10,
+    paddingTop: SPACING.xl,
   }
 });
 

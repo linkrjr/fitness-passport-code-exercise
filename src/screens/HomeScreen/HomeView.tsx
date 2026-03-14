@@ -1,30 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, StatusBar, FlatList, TouchableOpacity, Alert, Platform, Linking } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, FlatList, TouchableOpacity } from 'react-native';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { Facility } from '@models/Facility';
-import EmptyList from '@components/common/EmptyView';
+import EmptyView from '@components/common/EmptyView';
 import fetchFacilities from '@services/FacilityClient';
 import { RootStackParamList } from '@navigation/types'; 
+import { COLORS, SPACING, TYPOGRAPHY } from '@styles/theme';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: StatusBar.currentHeight || 0,
   },
+  
   item: {
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingLeft: 10,
-    paddingRight: 10,
+    padding: SPACING.xl,
   },
 
   name: {
-    fontSize: 20,
-    color: '#000000',
+    fontSize: TYPOGRAPHY.sizes.heading,
+    color: COLORS.text,
   },
   subtitle: {
-    fontSize: 14,
-    color: '#adadad',
+    fontSize: TYPOGRAPHY.sizes.subtitle,
+    color: COLORS.textSecondary,
   },
 });
 
@@ -49,13 +48,12 @@ const Item = ({ item, onPress }: ItemProps ) => (
 const ItemSeprator = () => <View style={{
   height: 1,
   width: "100%",
-  backgroundColor: "#c2c2c2",
+  backgroundColor: COLORS.separator,
 }} />
 
 const HomeView = () => {  
   const [facilities, setFacilities] = useState<Facility[]>([]);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const [selectedId, setSelectedId] = useState<string>();
 
   useEffect(() => {
     setFacilities(fetchFacilities());
@@ -70,7 +68,7 @@ const HomeView = () => {
     );
   }
 
-  if (facilities.length === 0) return (<EmptyList text='No location found.x' />)
+  if (facilities.length === 0) return (<EmptyView text='No location found.x' />)
 
   return (
     <View>
@@ -78,7 +76,6 @@ const HomeView = () => {
         data={facilities}
         renderItem={renderItem}
         keyExtractor={item => item.id}
-        extraData={selectedId}
         ItemSeparatorComponent={ItemSeprator}
       />
     </View>
