@@ -77,7 +77,7 @@ const FacilityView: React.FC<FacilityListViewProps> = ({ route }) => {
         </View>
       </View> 
     </ScrollView>
-      
+
   )
 }
 

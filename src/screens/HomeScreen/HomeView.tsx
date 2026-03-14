@@ -1,74 +1,92 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, StatusBar, FlatList, TouchableOpacity } from 'react-native';
+import { View, FlatList, ActivityIndicator, RefreshControl } from 'react-native';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { Facility } from '@models/Facility';
 import EmptyView from '@components/common/EmptyView';
 import fetchFacilities from '@services/FacilityClient';
 import { RootStackParamList } from '@navigation/types'; 
-import { COLORS, SPACING, TYPOGRAPHY } from '@styles/theme';
+import { Facility } from '@models/Facility';
+import ItemSeprator from './ItemSeparator';
+import ItemView from './ItemView';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
-  },
-  
-  item: {
-    padding: SPACING.xl,
-  },
+const paginate = (collection, page = 1, numItems = 10) => {
+  if( !Array.isArray(collection) ) {
+    throw `Expect array and got ${typeof collection}`;
+  }
+  const currentPage = parseInt(page);
+  const perPage = parseInt(numItems);
+  const offset = (page - 1) * perPage;
+  const paginatedItems = collection.slice(offset, offset + perPage);
 
-  name: {
-    fontSize: TYPOGRAPHY.sizes.heading,
-    color: COLORS.text,
-  },
-  subtitle: {
-    fontSize: TYPOGRAPHY.sizes.subtitle,
-    color: COLORS.textSecondary,
-  },
-});
+  return {
+    currentPage,
+    perPage,
+    total: collection.length,
+    totalPages: Math.ceil(collection.length / perPage),
+    data: paginatedItems
+  };
+}
+
+const LoadingIndicator = () => (
+  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <ActivityIndicator size="large" color="#000000" />
+  </View>
+);
+
+// const facilities = fetchFacilities()
+// const data = paginate(facilities)
 
 type ItemData = {
   item: Facility,
 }
 
-type ItemProps = { 
-  item: Facility, 
-  onPress: () => void,
-};
-
-const Item = ({ item, onPress }: ItemProps ) => (
-  <TouchableOpacity onPress={onPress} style={styles.item}>
-    <View>
-      <Text style={styles.name} >{item.name}</ Text>
-      <Text style={styles.subtitle} >{item.address}</ Text>
-    </View>
-  </TouchableOpacity>
-);
-
-const ItemSeprator = () => <View style={{
-  height: 1,
-  width: "100%",
-  backgroundColor: COLORS.separator,
-}} />
-
 const HomeView = () => {  
+  const [isLoading, setIsLoadind] = useState<boolean>(false);
+  const [hasError, setError] = useState(null);
   const [facilities, setFacilities] = useState<Facility[]>([]);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const [refreshing, setRefreshing] = useState<boolean>(false);
 
   useEffect(() => {
-    setFacilities(fetchFacilities());
+    if (isLoading) return;
+
+    setIsLoadind(true);
+    fetchFacilities()
+      .then(result => {
+        setFacilities(result);
+        setIsLoadind(false);
+      })
+      .catch(err => {
+        setIsLoadind(false);
+        setError(err);
+      });
   }, []);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetchFacilities()
+      .then(result => {
+        setRefreshing(false);
+        setFacilities(result);        
+      })
+      .catch(err => {
+        setRefreshing(false);
+        setError(err);
+      });
+  }
 
   const renderItem = ({ item }: ItemData) => {
     return (
-      <Item
+      <ItemView
         item={item}        
         onPress={() => navigation.navigate('Facility', { facility: item }) }
       />
     );
   }
 
-  if (facilities.length === 0) return (<EmptyView text='No location found.x' />)
+  if (isLoading) return (<LoadingIndicator />)
+
+  if (!!hasError) return (<EmptyView text='Fail to load locations.' />);
+  if (facilities.length === 0) return (<EmptyView text='No location found.' />);
 
   return (
     <View>
@@ -77,6 +95,14 @@ const HomeView = () => {
         renderItem={renderItem}
         keyExtractor={item => item.id}
         ItemSeparatorComponent={ItemSeprator}
+        refreshControl={
+          <RefreshControl 
+            refreshing={refreshing} 
+            onRefresh={onRefresh}
+            colors={['#000000']}
+            tintColor='#000000'
+          />
+        }
       />
     </View>
   );

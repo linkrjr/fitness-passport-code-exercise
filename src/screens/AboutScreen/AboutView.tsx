@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
 });
 
 
-const SettigsView = () => {
+const AboutView = () => {
   return (
     <View style={styles.container}>
       <Text>Fitness Passport Code Exercise</Text>
@@ -17,4 +17,4 @@ const SettigsView = () => {
   );
 }
 
-export default SettigsView;
+export default AboutView;
