@@ -53,7 +53,7 @@ const FacilityView: React.FC<FacilityListViewProps> = ({ route }) => {
     <ScrollView style={styles.card}>
       <View>
         <MapView 
-          initialRegion={
+          region={
             {
               latitudeDelta: 0.01, 
               longitudeDelta: 0.01, 

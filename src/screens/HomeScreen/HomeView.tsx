@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { View, ActivityIndicator, FlatList, RefreshControl, TextInput } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, ActivityIndicator, FlatList, RefreshControl } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import EmptyView from '@components/common/EmptyView';
@@ -9,7 +9,7 @@ import { Facility } from '@models/Facility';
 import ItemSeprator from './ItemSeparator';
 import ItemView from './ItemView';
 import filter from 'lodash.filter';
-import debounce from 'lodash.debounce';
+import SearchBarView from './SearchBarView';
 
 const LoadingIndicator = () => (
   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -20,37 +20,6 @@ const LoadingIndicator = () => (
 type ItemData = {
   item: Facility,
 }
-
-interface SearchBarProps {
-  value: string;
-  onChangeText: (text: string) => void;
-}
-
-const SearchBar = React.memo<SearchBarProps>(({ value, onChangeText }) => {
-  const inputRef = useRef<TextInput>(null);
-
-  return (
-    <View
-      style={{
-        backgroundColor: '#fff',
-        padding: 10,
-        marginVertical: 10,
-        borderRadius: 20
-      }}
-    >
-      <TextInput
-        ref={inputRef}
-        autoCapitalize="none"
-        autoCorrect={false}
-        clearButtonMode="always"
-        value={value}
-        onChangeText={onChangeText}
-        placeholder="Search"
-        style={{ backgroundColor: '#fff', paddingHorizontal: 20 }}
-      />
-    </View>
-  );
-});
 
 const HomeView = () => {  
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -119,7 +88,7 @@ const HomeView = () => {
   return (
     <View>
       <FlatList 
-        ListHeaderComponent={<SearchBar value={searchText} onChangeText={setSearchText} />}
+        ListHeaderComponent={<SearchBarView value={searchText} onChangeText={setSearchText} />}
         data={facilities}
         renderItem={renderItem}
         keyExtractor={item => item.id}
