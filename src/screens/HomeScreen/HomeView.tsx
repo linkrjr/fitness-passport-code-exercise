@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, ActivityIndicator, FlatList, RefreshControl } from 'react-native';
+import { StyleSheet, View, ActivityIndicator, FlatList, RefreshControl } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import EmptyView from '@components/common/EmptyView';
@@ -86,7 +86,7 @@ const HomeView = () => {
   if (!!hasError) return (<EmptyView text='Fail to load locations.' />);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.container}>
       <FlashList 
         ListHeaderComponent={<SearchBarView value={searchText} onChangeText={setSearchText} />}
         data={facilities}
@@ -106,5 +106,11 @@ const HomeView = () => {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  }
+})
 
 export default HomeView;
