@@ -66,6 +66,5 @@ src/
 ## Trade-offs and Possible Improvements
 
 - The client API is only reading from a local JSON file, could easily be extended to invoke a REST API;
-- Map markers could be clustered for better performance;
 - Infinite scrolling and pull to refresh can be used on the locations list to improve performance;
 - Unit tests could be added for service layers and UI;
